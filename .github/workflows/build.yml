@@ -13,18 +13,12 @@ jobs:
       run: lein deps
     - name: Release
       run: lein release
-    - name: Check
-      run: ls resources/public
-    - name: Setup secrets
-      run:
-        echo "${{ secrets.VERCEL_TOKEN }}" >> $VERCEL_ORG_ID
-        echo "${{ secrets.VERCEL_PROJECT_ID }}" >> $VERCEL_PROJECT_ID
     - name: Vercel Deployment
       uses: xmflsct/action-vercel-deployment@v0.5.3
       with:
         vercelToken: ${{ secrets.VERCEL_TOKEN }}
-        # vercelOrgId: ${{ secrets.VERCEL_ORG_ID }}
-        # vercelProjectId: ${{ secrets.VERCEL_PROJECT_ID }}
+        vercelOrgId: ${{ secrets.VERCEL_ORG_ID }}
+        vercelProjectId: ${{ secrets.VERCEL_PROJECT_ID }}
         githubToken: ${{ secrets.GITHUB_TOKEN }}
         # deploySource: "resources"
       #   assignDomain: "preview.example.com"
