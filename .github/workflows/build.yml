@@ -15,8 +15,8 @@ jobs:
       run: lein release
     - name: Check
       run: ls resources/public
-      uses: xmflsct/action-vercel-deployment@v0.5.3
     - name: Setup secrets
+      uses: xmflsct/action-vercel-deployment@v0.5.3
       run:
         echo "${{ secrets.VERCEL_TOKEN }}" >> $VERCEL_ORG_ID
         echo "${{ secrets.VERCEL_PROJECT_ID }}" >> $VERCEL_PROJECT_ID
