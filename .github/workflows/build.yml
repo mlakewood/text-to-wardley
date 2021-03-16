@@ -17,12 +17,16 @@ jobs:
       run: ls resources/public
     - name: Vercel Deployment
       uses: xmflsct/action-vercel-deployment@v0.5.3
+    - name: Setup secrets
+      run:
+        echo "${{ secrets.VERCEL_TOKEN }}" >> $VERCEL_ORG_ID
+        echo "${{ secrets.VERCEL_PROJECT_ID }}" >> $VERCEL_PROJECT_ID
       with:
         vercelToken: ${{ secrets.VERCEL_TOKEN }}
-        vercelOrgId: ${{ secrets.VERCEL_ORG_ID }}
-        vercelProjectId: ${{ secrets.VERCEL_PROJECT_ID }}
+        # vercelOrgId: ${{ secrets.VERCEL_ORG_ID }}
+        # vercelProjectId: ${{ secrets.VERCEL_PROJECT_ID }}
         githubToken: ${{ secrets.GITHUB_TOKEN }}
-        deploySource: "resources"
+        # deploySource: "resources"
       #   assignDomain: "preview.example.com"
       # env:
       #   YOUR_ENV_1: ${{ secrets.YOUR_ENV_1 }}
