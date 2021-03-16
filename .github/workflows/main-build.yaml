@@ -1,0 +1,33 @@
+name: Clojurescript CI
+
+on: 
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: lein deps
+    - name: Run Tests
+      run: lein ci
+    - name: Release
+      run: lein release
+    - name: Vercel Deploy
+      uses: amondnet/vercel-action@v19
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+        github-token: ${{ secrets.GITHUB_TOKEN }} #Optional
+        vercel-args: '--prod' #Optional
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}  #Required
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}} #Required
+        # working-directory: ./sub-directory #Your Working Directory, Optional
+        # alias-domains: | #Optional
+        #   staging.angular.vercel-action.amond.dev
+        #   pr-{{PR_NUMBER}}.angular.vercel-action.amond.dev
+
+
