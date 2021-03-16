@@ -15,3 +15,14 @@ jobs:
       run: lein release
     - name: Check
       run: ls resources/public
+    - uses: actions/vercel-deployment@0.5.1
+        with:
+          vercelToken: ${{ secrets.VERCEL_TOKEN }}
+          vercelOrgId: ${{ secrets.VERCEL_ORG_ID }}
+          vercelProjectId: ${{ secrets.VERCEL_PROJECT_ID }}
+          githubToken: ${{ secrets.PAT }}
+          sourceDirectory: "resources/public"
+        #   assignDomain: "preview.example.com"
+        # env:
+        #   YOUR_ENV_1: ${{ secrets.YOUR_ENV_1 }}
+        #   YOUR_ENV_2: ${{ secrets.YOUR_ENV_2 }}
