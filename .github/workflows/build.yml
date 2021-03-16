@@ -22,7 +22,7 @@ jobs:
         vercelOrgId: ${{ secrets.VERCEL_ORG_ID }}
         vercelProjectId: ${{ secrets.VERCEL_PROJECT_ID }}
         githubToken: ${{ secrets.GITHUB_TOKEN }}
-        deploySource: "resources/public"
+        # deploySource: ""
       #   assignDomain: "preview.example.com"
       # env:
       #   YOUR_ENV_1: ${{ secrets.YOUR_ENV_1 }}
