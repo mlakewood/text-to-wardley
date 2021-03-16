@@ -4,14 +4,15 @@
 		"highlight.js": "9.18.1",
 		"react": "17.0.1",
 		"react-dom": "17.0.1",
-		"react-highlight.js": "1.0.7"
+		"react-highlight.js": "1.0.7",
+		"slate": "0.59.0"
 	},
 	"devDependencies": {
 		"karma": "6.1.1",
 		"karma-chrome-launcher": "3.1.0",
+		"karma-cli": "2.0.0",
 		"karma-cljs-test": "0.1.0",
 		"karma-junit-reporter": "2.0.1",
-		"shadow-cljs": "2.11.21",
-		"karma-cli": "2.0.0"
+		"shadow-cljs": "2.11.21"
 	}
 }

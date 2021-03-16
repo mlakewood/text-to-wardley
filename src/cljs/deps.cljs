@@ -3,6 +3,7 @@
                 "karma-chrome-launcher" "3.1.0"
                 "karma-cljs-test"       "0.1.0"
                 "karma-junit-reporter"  "2.0.1"
+                "karma-cli"  "2.0.0"
                 }
  :npm-deps {:slate "0.59.0"}
 }
