@@ -13,15 +13,15 @@ jobs:
       run: lein deps
     - name: Release
       run: lein release
-    - name: Vercel Deployment
-      uses: xmflsct/action-vercel-deployment@v0.5.3
+    - name: Vercel Deploy
+      uses: amondnet/vercel-action@v19
       with:
-        vercelToken: ${{ secrets.VERCEL_TOKEN }}
-        vercelOrgId: ${{ secrets.VERCEL_ORG_ID }}
-        vercelProjectId: ${{ secrets.VERCEL_PROJECT_ID }}
-        githubToken: ${{ secrets.GITHUB_TOKEN }}
-        # deploySource: "resources"
-      #   assignDomain: "preview.example.com"
-      # env:
-      #   YOUR_ENV_1: ${{ secrets.YOUR_ENV_1 }}
-      #   YOUR_ENV_2: ${{ secrets.YOUR_ENV_2 }}
+        vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+        github-token: ${{ secrets.GITHUB_TOKEN }} #Optional
+        # vercel-args: '--prod' #Optional
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}  #Required
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}} #Required
+        # working-directory: ./sub-directory #Your Working Directory, Optional
+        # alias-domains: | #Optional
+        #   staging.angular.vercel-action.amond.dev
+        #   pr-{{PR_NUMBER}}.angular.vercel-action.amond.dev
