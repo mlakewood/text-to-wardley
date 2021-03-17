@@ -11,24 +11,25 @@
    "\t Evolution: Custom Built, 65%\n"
    "\t Visible: 100%\n"
    "\t Needs: Online Image Manipulation, Online Photo Storage\n"
-   "\n\n"
-   "Online Image Manipulation:\n"
-   "\n\n"
-   "Online Photo Storage:\n"
-   "\n\n"
-   "Print:\n"
-   "\n\n"
-   "Web Site:\n"
-   "\n\n"
-   "CRM:\n"
-   "\n\n"
-   "Platform:\n"
-   "\n\n"
-   "Compute:\n"
-   "\n\n"
-   "Data Centre:\n"
-   "\n\n"
-   "Power:\n"))
+  ;;  "\n\n"
+  ;;  "Online Image Manipulation:\n"
+  ;;  "\n\n"
+  ;;  "Online Photo Storage:\n"
+  ;;  "\n\n"
+  ;;  "Print:\n"
+  ;;  "\n\n"
+  ;;  "Web Site:\n"
+  ;;  "\n\n"
+  ;;  "CRM:\n"
+  ;;  "\n\n"
+  ;;  "Platform:\n"
+  ;;  "\n\n"
+  ;;  "Compute:\n"
+  ;;  "\n\n"
+  ;;  "Data Centre:\n"
+  ;;  "\n\n"
+  ;;  "Power:\n"
+      ))
 
 
 (defn trace [message res]
@@ -75,21 +76,39 @@
   [coll elm]
   (some #(= elm %) coll))
 
+(defn keywordize-node [line]
+  (keyword (str/replace (str/trim (str/replace line #":" "")) #" " "-")))
+
+(defn labelize-node [node]
+  (str/replace (str/replace (name node) "#:" "") #"-" " "))
+
+(def phases [:Genesis :Custom-Built :Product :Commodity])
+
 (defmulti parse-content
   (fn [x] (first (keys x))))
 
 (defmethod parse-content :Evolution [sub-node]
   (let [tokens (str/split (:Evolution sub-node) #", ")
-        phase (first tokens)
-        x-axis (last tokens)]
-    {:Evolution {:phase "custom build"
-                 :x-axis "50%"}}))
+        phase (keywordize-node (first tokens))
+        x-axis (str/replace (last tokens) #"%" "")]
+    (if (in? phases phase)
+      {:Evolution {:phase phase
+                   :x-axis x-axis}}
+      {:other [(:original sub-node)]})
+    ))
+
+(defmethod parse-content :Visible [sub-node]
+  (let [y-axis (str/replace (str/trim (:Visible sub-node)) #"%" "")]
+    {:Visible {:y-axis y-axis}}))
+
+(defmethod parse-content :Needs [sub-node]
+  (let [tokens (str/split (:Needs sub-node) #", ")
+        nodes (map #(keywordize-node (str/trim %)) tokens)
+        ]
+    {:Needs {:links nodes}}))
 
 (defmethod parse-content :default [sub-node]
   {:other [(:original sub-node)]})
-
-(defn keywordize-node [line]
-  (keyword (str/replace (str/trim (str/replace line #":" "")) #" " "-")))
 
 
 (defn parse-sub-node [line node]
