@@ -22,7 +22,7 @@ jobs:
         # vercel-args: '--prod' #Optional
         vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}  #Required
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}} #Required
-        # working-directory: ./sub-directory #Your Working Directory, Optional
+        working-directory: ./resources/public #Your Working Directory, Optional
         # alias-domains: | #Optional
         #   staging.angular.vercel-action.amond.dev
         #   pr-{{PR_NUMBER}}.angular.vercel-action.amond.dev
