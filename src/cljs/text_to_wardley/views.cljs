@@ -26,8 +26,8 @@
   (let [text (re-frame/subscribe [::subs/editor-raw])]
     [re-com/input-textarea
      :model text
-     :width "20%"
-     :height "90%"
+     :width "400px"
+     :height "455px"
      :rows 22
      :change-on-blur? false
      :on-change #(re-frame/dispatch [::events/update-editor-contents %])]))
