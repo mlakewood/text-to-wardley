@@ -67,8 +67,11 @@
 
 (defn map-node [value phase-box ymin ymax label]
   (let [x (calculate-x value phase-box)
-        y (calculate-y value ymin ymax)]
-    [[:text {:x (- x 10) :y (- y 20) :fill "black"} label]
+        y (calculate-y value ymin ymax)
+        x-mod (- x (* 3.2 (count label)))
+        ]
+    [[:rect {:x (- x-mod 5) :y (- y 35) :width (* (count label) 8) :height 20 :fill "white"}]
+     [:text {:x x-mod :y (- y 20) :fill "black"} label]
      [:circle {:cx x :cy y :r "5" :stroke "black" :stroke-width "2" :fill "white"}]]))
 
 (defn map-nodes [xmin xmax ymin ymax]
@@ -80,6 +83,43 @@
              labeled-nodes)]
     pairs))
 
+(defn calculate-coords-node [node-key phase-box ymin ymax]
+  (let [nodes (re-frame/subscribe [::subs/editor-parsed])
+        x (calculate-x (node-key @nodes) phase-box)
+        y (calculate-y (node-key @nodes) ymin ymax)
+        ]
+    {:x x :y y}))
+
+(defn draw-deps-line [start end offset]
+  (let [x1 (- (:x start) offset)
+        y1 (+ (:y start) offset)
+        x2 (+ (:x end) offset)
+        y2 (- (:y end) offset)]
+    [:line {:x1 x1 :y1 y1 :x2 x2 :y2 y2 :style {:stroke-width 2 :stroke "black"}}]))
+  
+
+(defn map-deps [xmin xmax ymin ymax]
+  (let [nodes (re-frame/subscribe [::subs/editor-parsed])
+        _ (println @nodes)
+        phase-box (calculate-phase-box xmin xmax)
+        links (db/trace "links -> " (map (fn [node-key] (let [node-coords (calculate-coords-node node-key phase-box ymin ymax)]
+                                                          
+                                                          (map
+                                                           (fn [node] (let [phase-box (calculate-phase-box 55 800)
+                                                                            result [node-coords (calculate-coords-node node phase-box 30 420)]]
+                                                                        result))
+                                                           (:links (:Needs (node-key @nodes))))
+                                                          
+                                                          )) 
+                                         (keys @nodes)))
+        svg-lines (map
+                   (fn [out]
+                     (map (fn [in] (draw-deps-line (first in) (last in) 0))
+                          out))
+                   links)]
+    svg-lines))
+
+(map-deps 55 800 30 420)
 
 (defn diagram [xmin xmax ymin ymax]
   (let [background [:svg {:style {:border "1px solid" :background "white" :width "50%" :height "90%"}}
@@ -95,8 +135,10 @@
                     [:text {:x 250 :y 440 :fill "black"} "Custom Built"]
                     [:text {:x 440 :y 440 :fill "black"} "Product"]
                     [:text {:x 620 :y 440 :fill "black"} "Commodity"]]
-        nodes (apply concat (map-nodes xmin xmax ymin ymax))]
-    (into [] (concat background nodes))))
+        nodes (apply concat (map-nodes xmin xmax ymin ymax))
+        lines (apply concat (map-deps xmin xmax ymin ymax))
+        ]
+    (into [] (concat background lines nodes))))
 
 (defn link-to-about-page []
   [re-com/hyperlink
@@ -153,3 +195,14 @@
      :src      (at)
      :height   "100%"
      :children [(routes/panels @active-panel)]]))
+
+
+(def data {:Customer {:Evolution {:phase :Custom-Built, :x-axis 65}, :Visible {:y-axis 98}, :Needs {:links [:Online-Image-Manipulation :Online-Photo-Storage]}}, :Online-Image-Manipulation {:Evolution {:phase :Custom-Built, :x-axis 20}, :Visible {:y-axis 85}}, :Online-Photo-Storage {:Evolution {:phase :Custom-Built, :x-axis 50}, :Visible {:y-axis 70}}})
+
+
+(map
+  (fn [node] (let [phase-box (calculate-phase-box 55 800)
+                   result ["foo" (calculate-coords-node node phase-box 30 420)]]
+     result))
+ (:links (:Needs (:Customer data)))
+ )

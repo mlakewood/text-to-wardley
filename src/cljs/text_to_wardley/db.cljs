@@ -9,12 +9,15 @@
   (str
    "Customer:\n"
    "\t Evolution: Custom Built, 65%\n"
-   "\t Visible: 100%\n"
+   "\t Visible: 98%\n"
    "\t Needs: Online Image Manipulation, Online Photo Storage\n"
-  ;;  "\n\n"
-  ;;  "Online Image Manipulation:\n"
-  ;;  "\n\n"
-  ;;  "Online Photo Storage:\n"
+
+   "Online Image Manipulation:\n"
+   "\t Evolution: Custom Built, 20%\n"
+   "\t Visible: 85%\n"
+   "Online Photo Storage:\n"
+   "\t Evolution: Custom Built, 50%\n"
+   "\t Visible: 70%\n"
   ;;  "\n\n"
   ;;  "Print:\n"
   ;;  "\n\n"
@@ -29,7 +32,7 @@
   ;;  "Data Centre:\n"
   ;;  "\n\n"
   ;;  "Power:\n"
-      ))
+   ))
 
 
 (defn trace [message res]
