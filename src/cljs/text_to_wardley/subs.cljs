@@ -21,3 +21,8 @@
  ::editor-parsed
  (fn [db _]
    (:parsed (:editor db))))
+
+(re-frame/reg-sub
+ ::window-size
+ (fn [db _]
+   (:window-size db)))
