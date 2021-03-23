@@ -29,7 +29,7 @@
 
 (defn editor []
   (let [window-size (re-frame/subscribe [::subs/window-size])
-        height (percent-of (:height @window-size) 80)
+        height (percent-of (:height @window-size) 75)
         width (percent-of (:width @window-size) 30)
         _ (db/trace "editor width ->" width)
         _ (db/trace "editor height ->" height)
@@ -167,10 +167,11 @@
     (into [] (concat background lines nodes labels))))
 
 (defn link-to-about-page []
-  [re-com/hyperlink
+  [re-com/hyperlink-href
    :src      (at)
-   :label    "go to About Page"
-   :on-click #(re-frame/dispatch [::events/navigate :about])])
+   :label    "Problems or questions?"
+   :style {:padding-left "24px"}
+   :href     "https://github.com/mlakewood/text-to-wardley/issues"])
 
 
 (defn home-panel []
@@ -181,15 +182,27 @@
     [re-com/v-box
      :src      (at)
      :gap      "1em"
-     :children [[home-title]
-                [re-com/h-box
-                 :width (str (percent-of width 98 ) "px")
-                 :height (str (percent-of height 85) "px")
+     :children [[re-com/h-box
+                 :width (str (percent-of width 98) "px")
+                 :height (str (percent-of height 15) "px")
                  :src (at)
                  :gap "1em"
-                 :children [[editor]
-                            [diagram 55 (percent-of width 65) 30 (percent-of height 80)]]]
-              ;; [link-to-about-page]
+                 :children [[re-com/gap :size "10px"]
+                            [home-title]
+                            [re-com/gap :size "25px"]
+                            [re-com/p {:style {:color "black" :padding-top "25px"}} "Don't know what a Wardley map is? Read the book -> " [:a "https://medium.com/wardleymaps"]]
+                            
+                            
+                            ]]
+                [re-com/h-box
+                 :width (str (percent-of width 98) "px")
+                 :height (str (percent-of height 75) "px")
+                 :src (at)
+                 :gap "1em"
+                 :children [[re-com/gap :size "10px"]
+                            [editor]
+                            [diagram 55 (percent-of width 65) 30 (percent-of height 70)]]]
+              [link-to-about-page]
                 ]]
     ))
 
