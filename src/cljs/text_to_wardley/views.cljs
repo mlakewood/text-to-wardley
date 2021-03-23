@@ -27,12 +27,17 @@
      :label (str "Text to Wardley Map.")
      :level :level1]))
 
-(defn editor [width height]
-  (let [text (re-frame/subscribe [::subs/editor-raw])]
+(defn editor []
+  (let [window-size (re-frame/subscribe [::subs/window-size])
+        height (percent-of (:height @window-size) 80)
+        width (percent-of (:width @window-size) 30)
+        _ (db/trace "editor width ->" width)
+        _ (db/trace "editor height ->" height)
+        text (re-frame/subscribe [::subs/editor-raw])]
     [re-com/input-textarea
      :model text
      :width (str width "px")
-     :height (str (percent-of height 100) "px")
+     :height (str height "px")
     ;;  :rows 22
      :change-on-blur? false
      :on-change #(re-frame/dispatch [::events/update-editor-contents %])]))
@@ -182,7 +187,7 @@
                  :height (str (percent-of height 85) "px")
                  :src (at)
                  :gap "1em"
-                 :children [[editor (percent-of width 30) (percent-of height 80)]
+                 :children [[editor]
                             [diagram 55 (percent-of width 65) 30 (percent-of height 80)]]]
               ;; [link-to-about-page]
                 ]]
