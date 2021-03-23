@@ -35,4 +35,4 @@
  ::track-window-size
  (fn-traced []
    {:window/on-resize {:dispatch [::window-resized]
-                       :debounce-ms 500}}))
+                       :debounce-ms 250}}))

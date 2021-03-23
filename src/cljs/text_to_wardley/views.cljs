@@ -218,7 +218,7 @@
 ;; main
 
 (defn main-panel []
-  (let [;;_ (db/trace "setup window resize ->" (re-frame/dispatch [::events/track-window-size]))
+  (let [_ (re-frame/dispatch [::events/track-window-size])
         active-panel (re-frame/subscribe [::subs/active-panel])]
     [re-com/v-box
      :src      (at)
