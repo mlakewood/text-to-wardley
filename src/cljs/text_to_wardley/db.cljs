@@ -3,33 +3,51 @@
    [clojure.string :as str]
    [clojure.pprint :as pp]
    [clojure.set :as set]
+   [text-to-wardley.config :as config]
    ))
 
 (def starting-editor-value
   (str
-   "Customer:\n"
-   "\t Evolution: Custom Built, 65%\n"
-   "\t Visible: 100%\n"
-   "\t Needs: Online Image Manipulation, Online Photo Storage\n"
-  ;;  "\n\n"
-  ;;  "Online Image Manipulation:\n"
-  ;;  "\n\n"
-  ;;  "Online Photo Storage:\n"
-  ;;  "\n\n"
-  ;;  "Print:\n"
-  ;;  "\n\n"
-  ;;  "Web Site:\n"
-  ;;  "\n\n"
-  ;;  "CRM:\n"
-  ;;  "\n\n"
-  ;;  "Platform:\n"
-  ;;  "\n\n"
-  ;;  "Compute:\n"
-  ;;  "\n\n"
-  ;;  "Data Centre:\n"
-  ;;  "\n\n"
-  ;;  "Power:\n"
-      ))
+"Customer:
+	 Evolution: Custom Built, 65%
+	 Visible: 98%
+	 Needs: Online Image Manipulation, Online Photo Storage, Web Site, Print
+Online Image Manipulation:
+	 Evolution: Custom Built, 10%
+	 Visible: 90%
+         Needs: Online Photo Storage
+Online Photo Storage:
+	 Evolution: Custom Built, 50%
+	 Visible: 80%
+         Needs: Web Site
+Print:
+	 Evolution: Product, 45%
+	 Visible: 80%
+         Needs: Web Site
+Web Site:
+	 Evolution: Product, 55%
+	 Visible: 70%
+         Needs: CRM, Platform
+CRM:
+	 Evolution: Product, 65%
+	 Visible: 60%
+         Needs: Compute
+Platform:
+	 Evolution: Product, 20%
+	 Visible: 50%
+         Needs: Compute
+Compute:
+	 Evolution: Product, 70%
+	 Visible: 20%
+         Needs: Data Center, Power
+Data Center:
+	 Evolution: Product, 25%
+	 Visible: 15%
+         Needs: Power
+Power:
+	 Evolution: Commodity, 30%
+	 Visible: 10%"
+))
 
 
 (defn trace [message res]
@@ -77,7 +95,9 @@
   (some #(= elm %) coll))
 
 (defn keywordize-node [line]
-  (keyword (str/replace (str/trim (str/replace line #":" "")) #" " "-")))
+  (if (not-empty line)
+    (keyword (str/replace (str/trim (str/replace line #":" "")) #" " "-"))
+    nil))
 
 (defn labelize-node [node]
   (str/replace (str/replace (name node) "#:" "") #"-" " "))
@@ -103,7 +123,7 @@
 
 (defmethod parse-content :Needs [sub-node]
   (let [tokens (str/split (:Needs sub-node) #", ")
-        nodes (map #(keywordize-node (str/trim %)) tokens)
+        nodes (into [] (remove nil? (map #(keywordize-node (str/trim %)) tokens)))
         ]
     {:Needs {:links nodes}}))
 
@@ -146,8 +166,7 @@
                           (conj acc-trees line-result)
                           acc-trees)]
           (recur acc-trees (nthnext remaining-lines 1) new-node))
-        (let [_ (println acc-trees)]
-          (merge-nodes acc-trees))))))
+        (merge-nodes acc-trees)))))
 
 (defn populate-editor [text]
   {:parsed (parse text) :raw text})
@@ -159,4 +178,10 @@
 
 (def default-db
   {:name "re-frame"
-   :editor (populate-editor starting-editor-value)})
+   :editor (populate-editor starting-editor-value)
+   :window-size {:width js/window.innerWidth, :height js/window.innerHeight}})
+
+
+
+
+(into [] (remove nil? (map #(keywordize-node (str/trim %)) [""])))
