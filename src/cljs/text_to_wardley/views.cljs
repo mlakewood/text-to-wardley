@@ -28,11 +28,13 @@
      :level :level1]))
 
 (defn editor [width height]
-  (let [text (re-frame/subscribe [::subs/editor-raw])]
+  (let [_ (db/trace "editor width ->" width)
+        _ (db/trace "editor height ->" height)
+        text (re-frame/subscribe [::subs/editor-raw])]
     [re-com/input-textarea
      :model text
      :width (str width "px")
-     :height (str (percent-of height 100) "px")
+     :height (str height "px")
     ;;  :rows 22
      :change-on-blur? false
      :on-change #(re-frame/dispatch [::events/update-editor-contents %])]))
