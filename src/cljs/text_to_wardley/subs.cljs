@@ -10,7 +10,7 @@
 (re-frame/reg-sub
  ::active-panel
  (fn [db _]
-   (:active-panel db)))
+   (:panel (:navigation db))))
 
 (re-frame/reg-sub
  ::editor-raw
@@ -26,3 +26,13 @@
  ::window-size
  (fn [db _]
    (:window-size db)))
+
+(re-frame/reg-sub
+ ::query-params
+ (fn [db _]
+   (:query-params (:navigation db))))
+
+(re-frame/reg-sub
+ ::link-encoded
+ (fn [db _]
+   (:encoded (:editor db))))

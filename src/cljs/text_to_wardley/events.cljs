@@ -17,9 +17,9 @@
    {:navigate handler}))
 
 (re-frame/reg-event-fx
- ::set-active-panel
- (fn-traced [{:keys [db]} [_ active-panel]]
-   {:db (assoc db :active-panel active-panel)}))
+ ::set-navigation
+ (fn-traced [{:keys [db]} [_ navigation]]
+   {:db (assoc db :navigation navigation)}))
 
 (re-frame/reg-event-fx
  ::update-editor-contents

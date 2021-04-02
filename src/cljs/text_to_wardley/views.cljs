@@ -174,8 +174,11 @@
    :href     "https://github.com/mlakewood/text-to-wardley/issues"])
 
 
-(defn home-panel []
-  (let [window-size (re-frame/subscribe [::subs/window-size])
+
+(defn home-panel [query-params]
+  (let [_ (db/trace "qp -> " query-params)
+        window-size (re-frame/subscribe [::subs/window-size])
+        link (db/trace "link ->" @(re-frame/subscribe [::subs/link-encoded]))
         height (:height @window-size)
         width (:width @window-size)
         ]
@@ -190,7 +193,8 @@
                  :children [[re-com/gap :size "10px"]
                             [home-title]
                             [re-com/gap :size "25px"]
-                            [re-com/p {:style {:color "black" :padding-top "25px"}} "Don't know what a Wardley map is? Read the book -> " [:a "https://medium.com/wardleymaps"]]
+                            [re-com/p {:style {:color "black" :padding-top "25px"}} "Don't know what a Wardley map is? Read the book -> " [:a {:href "https://medium.com/wardleymaps"} "https://medium.com/wardleymaps"]]
+                            [re-com/p {:style {:color "black" :padding-top "25px"}} [:a {:href (str "/?data=" link)} "Save me a link!"]]
                             
                             
                             ]]
@@ -210,40 +214,15 @@
 
 (defmethod routes/panels :home-panel [] [home-panel])
 
-;; about
-
-(defn about-title []
-  [re-com/title
-   :src   (at)
-   :label "This is the About Page."
-   :level :level1])
-
-(defn link-to-home-page []
-  [re-com/hyperlink
-   :src      (at)
-   :label    "go to Home Page"
-   :on-click #(re-frame/dispatch [::events/navigate :home])])
-
-(defn about-panel []
-  [re-com/v-box
-   :src      (at)
-   :gap      "1em"
-   :children [[about-title]
-              [link-to-home-page]]])
-
-(defmethod routes/panels :about-panel [] [about-panel])
-
 ;; main
 
 (defn main-panel []
-  (let [_ (re-frame/dispatch [::events/track-window-size])
+  (let [query-params (db/trace "query-params views ->" @(re-frame/subscribe [::subs/query-params]))
         active-panel (re-frame/subscribe [::subs/active-panel])]
+    (if (seq (:data query-params))
+      (re-frame/dispatch [::events/update-editor-contents (db/decode-qp-text (:data query-params))])
+      (re-frame/dispatch [::events/update-editor-contents db/starting-editor-value]))
     [re-com/v-box
      :src      (at)
      :height   "100%"
      :children [(routes/panels @active-panel)]]))
-
-
-(* 100 (/ 90  100))
-
-(keys @(re-frame/subscribe [::subs/editor-parsed]))
