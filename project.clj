@@ -12,7 +12,9 @@
                  [bidi "2.1.6"]
                  [cljsjs/quill "1.3.7-0"]
                  [district0x/re-frame-window-fx "1.1.0"]
-                 [kibu/pushy "0.3.8"]]
+                 [kibu/pushy "0.3.8"]
+                 [lambdaisland/uri "1.4.54"]
+                 ]
 
   :plugins [[lein-shadow "0.3.1"]
             [lein-less "1.7.5"]

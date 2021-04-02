@@ -6,6 +6,8 @@
    [text-to-wardley.routes :as routes]
    [text-to-wardley.views :as views]
    [text-to-wardley.config :as config]
+   [text-to-wardley.subs :as subs]
+   [text-to-wardley.db :as db]
    ))
 
 
