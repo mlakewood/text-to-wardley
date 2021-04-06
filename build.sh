@@ -4,3 +4,4 @@ set -euf -o pipefail
 
 lein deps
 lein ci
+lein release
