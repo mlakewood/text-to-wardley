@@ -13,4 +13,4 @@
   publish = "resources/public/"
 
   # Default build command.
-  command = "./build.sh"
+  command = "chmod +x build.sh && ./build.sh"
