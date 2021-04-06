@@ -65,7 +65,7 @@
                           :output-to "target/karma-test.js"}
                          :function
                          {:target :node-library
-                          :output-to "target/lambda.js"
+                          :output-to "resources/public/js/function/lambda.js"
                           :exports {:handler text-to-wardley.lambda/handler}}
                          }}
 
@@ -95,6 +95,10 @@
             "karma"        ["do"
                             ["shell" "echo" "\"DEPRECATED: Please use lein ci instead.\""]
                             ["ci"]]
+            
+            "functions"     ["with-profile" "prod" "do"
+                                ["shadow" "release" "function"]]
+            
             "ci"           ["with-profile" "prod" "do"
                             ["shadow" "compile" "karma-test"]
                             ["shell" "node_modules/karma-cli/bin/karma" "start" "--single-run" "--reporters" "junit,dots"]]}

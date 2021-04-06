@@ -14,6 +14,8 @@ jobs:
       run: lein ci
     - name: Release
       run: lein release
+    - name: functions
+      run: lein functions
     # - name: Vercel Deploy
     #   uses: amondnet/vercel-action@v19
     #   with:
@@ -39,3 +41,4 @@ jobs:
           enable-pull-request-comment: false
           enable-commit-comment: true
           overwrites-pull-request-comment: true
+          functions-dir: "resources/public/js/function"
