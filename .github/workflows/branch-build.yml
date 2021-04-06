@@ -14,15 +14,28 @@ jobs:
       run: lein ci
     - name: Release
       run: lein release
-    - name: Vercel Deploy
-      uses: amondnet/vercel-action@v19
+    # - name: Vercel Deploy
+    #   uses: amondnet/vercel-action@v19
+    #   with:
+    #     vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+    #     github-token: ${{ secrets.GITHUB_TOKEN }} #Optional
+    #     # vercel-args: '--prod' #Optional
+    #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}  #Required
+    #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}} #Required
+    #     working-directory: ./resources/public #Your Working Directory, Optional
+    #     # alias-domains: | #Optional
+    #     #   staging.angular.vercel-action.amond.dev
+    #     #   pr-{{PR_NUMBER}}.angular.vercel-action.amond.dev
+    - name: Netlify Actions
+      uses: nwtgck/actions-netlify@v1.1.11
+      env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
       with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
-        github-token: ${{ secrets.GITHUB_TOKEN }} #Optional
-        # vercel-args: '--prod' #Optional
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}  #Required
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}} #Required
-        working-directory: ./resources/public #Your Working Directory, Optional
-        # alias-domains: | #Optional
-        #   staging.angular.vercel-action.amond.dev
-        #   pr-{{PR_NUMBER}}.angular.vercel-action.amond.dev
+          publish-dir: 'resources/public'
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
