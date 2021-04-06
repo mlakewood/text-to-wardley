@@ -14,3 +14,6 @@
 
   # Default build command.
   command = "chmod +x build.sh && ./build.sh"
+
+  [build.environment]
+    CHROME_BIN = "/opt/build/repo/node_modules/puppeteer/.local-chromium/linux-856583"

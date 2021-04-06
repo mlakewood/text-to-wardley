@@ -6,5 +6,5 @@
                 "karma-cli"  "2.0.0"
                 "puppeteer" "8.0.0"
                 }
- :npm-deps {:slate "0.59.0"}
+ :npm-deps {}
 }
