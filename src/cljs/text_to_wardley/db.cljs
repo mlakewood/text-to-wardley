@@ -124,6 +124,15 @@ Power:
         nodes (into [] (remove nil? (map #(keywordize-node (str/trim %)) tokens)))]
     {:Needs {:links nodes}}))
 
+(defmethod parse-content :Evolve [sub-node]
+  (let [tokens (str/split (:Evolve sub-node) #", ")
+        phase (keywordize-node (first tokens))
+        x-axis (str/replace (last tokens) #"%" "")]
+    (if (in? phases phase)
+      {:Evolve {:phase phase
+                   :x-axis x-axis}}
+      {:other [(:original sub-node)]})))
+
 (defmethod parse-content :default [sub-node]
   {:other [(:original sub-node)]})
 
@@ -148,8 +157,12 @@ Power:
         nil))))
 
 
+(defn pre-process-text [text]
+  (let [re-dup-new-lines (str/replace text #"\n\n" "\n" )]
+    re-dup-new-lines))
+
 (defn parse [text]
-  (let [lines (str/split-lines text)]
+  (let [lines (str/split-lines (pre-process-text text))]
     (loop [acc-trees []
            remaining-lines lines
            node nil]
@@ -193,3 +206,5 @@ Power:
       {:name "re-frame"
        :editor {:parsed {} :raw ""}
        :window-size {:width js/window.innerWidth, :height js/window.innerHeight}})
+
+(pre-process-text "Evolution: Product, 20%\n\n\t Visible: 50%\n Needs:")

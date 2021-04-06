@@ -62,7 +62,12 @@
                          :karma-test
                          {:target :karma
                           :ns-regexp "-test$"
-                          :output-to "target/karma-test.js"}}}
+                          :output-to "target/karma-test.js"}
+                         :function
+                         {:target :node-library
+                          :output-to "target/lambda.js"
+                          :exports {:handler text-to-wardley.lambda/handler}}
+                         }}
 
   :shell {:commands {"karma" {:windows         ["cmd" "/c" "karma"]
                               :default-command "karma"}
