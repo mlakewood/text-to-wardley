@@ -16,4 +16,4 @@
   command = "chmod +x build.sh && ./build.sh"
 
   [build.environment]
-    CHROME_BIN = "/opt/build/repo/node_modules/puppeteer/.local-chromium/linux-856583/chrome"
+    CHROME_BIN = "/opt/build/repo/node_modules/puppeteer/.local-chromium/linux-856583/chrome-linux/chrome"
